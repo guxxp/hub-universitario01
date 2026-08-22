@@ -72,7 +72,7 @@ Windows:
 
 ```powershell
 cd apps/backend
-mvnw.cmd spring-boot:run
+./mvnw.cmd spring-boot:run
 ```
 
 O Maven Wrapper baixa o Maven 3.9.11 automaticamente na primeira execução.
