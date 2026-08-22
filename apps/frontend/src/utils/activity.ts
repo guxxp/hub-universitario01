@@ -24,5 +24,7 @@ export function formatActivityDate(date: string) {
 
 export function filterActivities(activities: Activity[], category: CategoryFilter) {
   if (category === 'ALL') return activities
-  return activities.filter((activity) => activity.category === category)
+  return activities.filter(
+    (activity) => activity.category === category || activity.category === 'EVENT',
+  )
 }
