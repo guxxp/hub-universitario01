@@ -1,10 +1,13 @@
 package br.edu.hub.repository;
 
-import br.edu.hub.entity.Activity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import br.edu.hub.entity.Activity;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findAllByOrderByDateDesc();
+    List<Activity> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrderByDateDesc(
+            String titleTerm, String descriptionTerm);
 }
