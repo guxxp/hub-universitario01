@@ -12,6 +12,7 @@ import br.edu.hub.repository.ActivityRepository;
 
 @Service
 public class ActivityService {
+
     private final ActivityRepository activityRepository;
 
     public ActivityService(ActivityRepository activityRepository) {
@@ -20,29 +21,53 @@ public class ActivityService {
 
     @Transactional(readOnly = true)
     public List<ActivityResponse> list(String search) {
-    List<Activity> activities = (search == null || search.isBlank())
-            ? activityRepository.findAllByOrderByDateDesc()
-            : activityRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrderByDateDesc(
-                    search, search);
-    return activities.stream().map(ActivityResponse::from).toList();
-}
+        List<Activity> activities = (search == null || search.isBlank())
+                ? activityRepository.findAllByOrderByDateDesc()
+                : activityRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrderByDateDesc(
+                        search, search);
+        return activities.stream().map(ActivityResponse::from).toList();
+    }
 
     @Transactional(readOnly = true)
     public ActivityResponse findById(Long id) {
+        if (id <= 0) {
+            throw new IllegalStateException("Id deve ser maior que 0");
+        }
+
         return ActivityResponse.from(requireActivity(id));
     }
 
     @Transactional
     public ActivityResponse update(Long id, ActivityUpdateRequest request) {
+        if (id <= 0) {
+            throw new IllegalStateException("Id deve ser maior que 0");
+        }
         Activity activity = requireActivity(id);
-        if (request.title() != null) activity.setTitle(request.title());
-        if (request.description() != null) activity.setDescription(request.description());
-        if (request.category() != null) activity.setCategory(request.category());
-        if (request.status() != null) activity.setStatus(request.status());
-        if (request.capacity() != null) activity.setCapacity(request.capacity());
-        if (request.organizer() != null) activity.setOrganizer(request.organizer());
-        if (request.location() != null) activity.setLocation(request.location());
-        if (request.date() != null) activity.setDate(request.date());
+        if (request.title() != null) {
+            activity.setTitle(request.title());
+        }
+        if (request.description() != null) {
+            activity.setDescription(request.description());
+        }
+        if (request.category() != null) {
+            activity.setCategory(request.category());
+        }
+        if (request.status() != null) {
+            activity.setStatus(request.status());
+        }
+        if (request.capacity() != null) {
+            activity.setCapacity(request.capacity());
+        }
+        if (request.organizer() != null) {
+            activity.setOrganizer(request.organizer());
+        }
+        if (request.location() != null) {
+            activity.setLocation(request.location());
+        }
+
+        if (request.date() != null) {
+            activity.setDate(request.date());
+        }
         return ActivityResponse.from(activityRepository.save(activity));
     }
 
