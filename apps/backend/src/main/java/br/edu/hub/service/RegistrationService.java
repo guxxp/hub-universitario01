@@ -6,10 +6,8 @@ import br.edu.hub.entity.Activity;
 import br.edu.hub.entity.Registration;
 import br.edu.hub.repository.ActivityRepository;
 import br.edu.hub.repository.RegistrationRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class RegistrationService {
   public RegistrationResponse register(Long activityId, RegistrationRequest request) {
     Activity activity = activityService.requireActivity(activityId);
     if (activity.getRegisteredCount() >= activity.getCapacity()) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Activity is full");
+      throw new IllegalStateException("Activity is full");
     }
     Registration registration = registrationRepository.save(
         new Registration(activity, request.studentName(), request.studentEmail()));
