@@ -59,6 +59,8 @@ export function RegistrationForm({ activityId, disabled = false }: RegistrationF
               onChange={(event) => setStudentEmail(event.target.value)}
               type="email"
               required
+              pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+              title="Informe um e-mail válido, com domínio e extensão (ex: voce@email.com)"
               placeholder="voce@email.com"
             />
           </label>
