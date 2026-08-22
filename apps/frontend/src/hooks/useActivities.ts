@@ -9,11 +9,10 @@ import type { RegistrationInput } from '../types/activity'
 
 export function useActivities(search: string) {
   return useQuery({
-    queryKey: ['activities', { search }],
+    queryKey: ['activities', search],
     queryFn: () => getActivities(search),
   })
 }
-
 export function useActivity(id: number) {
   return useQuery({
     queryKey: ['activities', id],

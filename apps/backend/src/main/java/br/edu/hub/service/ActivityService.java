@@ -1,13 +1,14 @@
 package br.edu.hub.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.edu.hub.dto.ActivityResponse;
 import br.edu.hub.dto.ActivityUpdateRequest;
 import br.edu.hub.entity.Activity;
 import br.edu.hub.repository.ActivityRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class ActivityService {
@@ -19,10 +20,12 @@ public class ActivityService {
 
     @Transactional(readOnly = true)
     public List<ActivityResponse> list(String search) {
-        return activityRepository.findAllByOrderByDateDesc().stream()
-                .map(ActivityResponse::from)
-                .toList();
-    }
+    List<Activity> activities = (search == null || search.isBlank())
+            ? activityRepository.findAllByOrderByDateDesc()
+            : activityRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrderByDateDesc(
+                    search, search);
+    return activities.stream().map(ActivityResponse::from).toList();
+}
 
     @Transactional(readOnly = true)
     public ActivityResponse findById(Long id) {
