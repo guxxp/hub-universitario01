@@ -13,18 +13,23 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException exception) {
-        Map<String, String> errors = new LinkedHashMap<>();
-        exception.getBindingResult().getFieldErrors()
-                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return ResponseEntity.badRequest()
-                .body(new ErrorResponse("Validation failed", LocalDateTime.now(), errors));
-    }
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException exception) {
+    Map<String, String> errors = new LinkedHashMap<>();
+    exception.getBindingResult().getFieldErrors()
+        .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+    return ResponseEntity.badRequest()
+        .body(new ErrorResponse("Validation failed", LocalDateTime.now(), errors));
+  }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorResponse.of(exception.getMessage()));
-    }
+  @ExceptionHandler(IllegalArgumentException.class)
+  ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException exception) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(ErrorResponse.of(exception.getMessage()));
+  }
+
+  @ExceptionHandler(IllegalStateException.class)
+  ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException exception) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse.of(exception.getMessage()));
+  }
 }
