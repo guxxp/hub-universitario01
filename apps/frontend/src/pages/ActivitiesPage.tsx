@@ -1,11 +1,16 @@
 import { useState, type FormEvent } from 'react'
 import { ActivityCard } from '../components/ActivityCard'
-import { ActivityFilters, type CategoryFilter } from '../components/ActivityFilters'
+import {
+  ActivityFilters,
+  type AvailabilityFilter,
+  type CategoryFilter,
+} from '../components/ActivityFilters'
 import { useActivities } from '../hooks/useActivities'
 import { filterActivities } from '../utils/activity'
 
 export function ActivitiesPage() {
   const [category, setCategory] = useState<CategoryFilter>('ALL')
+  const [availability, setAvailability] = useState<AvailabilityFilter>('ALL')
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const activitiesQuery = useActivities(search)
@@ -15,7 +20,11 @@ export function ActivitiesPage() {
     setSearch(searchInput.trim())
   }
 
-  const filteredActivities = filterActivities(activitiesQuery.data ?? [], category)
+  const filteredActivities = filterActivities(
+    activitiesQuery.data ?? [],
+    category,
+    availability
+  )
 
   return (
     <main>
@@ -43,9 +52,19 @@ export function ActivitiesPage() {
             <p className="eyebrow">Agenda acadêmica</p>
             <h2>Próximas atividades</h2>
           </div>
-          {!activitiesQuery.isLoading && <span>{filteredActivities.length} oportunidades</span>}
+          {!activitiesQuery.isLoading && (
+            <span>
+              {filteredActivities.length}{' '}
+              {filteredActivities.length === 1 ? 'oportunidade' : 'oportunidades'}
+            </span>
+          )}
         </div>
-        <ActivityFilters selected={category} onChange={setCategory} />
+        <ActivityFilters
+          selectedCategory={category}
+          onCategoryChange={setCategory}
+          selectedAvailability={availability}
+          onAvailabilityChange={setAvailability}
+        />
 
         {activitiesQuery.isLoading && <div className="state-card">Carregando atividades...</div>}
         {activitiesQuery.isError && (
@@ -56,7 +75,9 @@ export function ActivitiesPage() {
           </div>
         )}
         {activitiesQuery.isSuccess && filteredActivities.length === 0 && (
-          <div className="state-card">Nenhuma atividade encontrada para os filtros selecionados.</div>
+          <div className="state-card">
+            Nenhuma atividade encontrada para os filtros selecionados.
+          </div>
         )}
         <div className="activity-grid">
           {filteredActivities.map((activity) => (

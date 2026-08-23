@@ -7,6 +7,9 @@ export type ActivityCategory =
 
 export type ActivityStatus = 'OPEN' | 'FULL' | 'CLOSED'
 
+export type CategoryFilter = ActivityCategory | 'ALL'
+export type AvailabilityFilter = 'ALL' | 'AVAILABLE' | 'FULL' | 'CLOSED'
+
 export interface Activity {
   id: number
   title: string
