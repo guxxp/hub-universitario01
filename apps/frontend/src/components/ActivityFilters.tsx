@@ -1,35 +1,57 @@
-import type { ActivityCategory } from '../types/activity'
-import { categoryLabels } from '../utils/activity'
+import type { AvailabilityFilter, CategoryFilter } from '../types/activity'
+import { availabilityLabels, categoryLabels } from '../utils/activity'
 
-export type CategoryFilter = ActivityCategory | 'ALL'
+export type { AvailabilityFilter, CategoryFilter }
 
 interface ActivityFiltersProps {
-  selected: CategoryFilter
-  onChange: (category: CategoryFilter) => void
+  selectedCategory: CategoryFilter
+  onCategoryChange: (category: CategoryFilter) => void
+  selectedAvailability: AvailabilityFilter
+  onAvailabilityChange: (availability: AvailabilityFilter) => void
 }
 
-const categories: CategoryFilter[] = [
-  'ALL',
-  'WORKSHOP',
-  'LECTURE',
-  'COURSE',
-  'EXTENSION_PROJECT',
-  'EVENT',
-]
+const categories: CategoryFilter[] = ['ALL', 'WORKSHOP', 'LECTURE', 'COURSE', 'EXTENSION_PROJECT', 'EVENT']
+const availabilities: AvailabilityFilter[] = ['ALL', 'AVAILABLE', 'FULL', 'CLOSED']
 
-export function ActivityFilters({ selected, onChange }: ActivityFiltersProps) {
+export function ActivityFilters({
+  selectedCategory,
+  onCategoryChange,
+  selectedAvailability,
+  onAvailabilityChange,
+}: ActivityFiltersProps) {
   return (
-    <div className="filter-group" role="group" aria-label="Filtrar por categoria">
-      {categories.map((category) => (
-        <button
-          className={selected === category ? 'filter-active' : ''}
-          key={category}
-          type="button"
-          onClick={() => onChange(category)}
-        >
-          {category === 'ALL' ? 'Todas' : categoryLabels[category]}
-        </button>
-      ))}
+    <div className="filters-container">
+      <div className="filter-group-wrapper">
+        <span className="filter-group-title">Categoria</span>
+        <div className="filter-group" role="group" aria-label="Filtrar por categoria">
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={selectedCategory === category ? 'filter-active' : ''}
+              onClick={() => onCategoryChange(category)}
+            >
+              {category === 'ALL' ? 'Todas' : categoryLabels[category]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="filter-group-wrapper">
+        <span className="filter-group-title">Disponibilidade</span>
+        <div className="filter-group" role="group" aria-label="Filtrar por disponibilidade">
+          {availabilities.map((availability) => (
+            <button
+              key={availability}
+              type="button"
+              className={selectedAvailability === availability ? 'filter-active' : ''}
+              onClick={() => onAvailabilityChange(availability)}
+            >
+              {availabilityLabels[availability]}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
