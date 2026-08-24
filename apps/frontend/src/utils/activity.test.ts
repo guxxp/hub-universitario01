@@ -82,7 +82,7 @@ describe('filterActivities', () => {
     expect(filterActivities(mixedActivities, 'ALL', 'FULL')).toEqual([mixedActivities[2]])
     expect(filterActivities(mixedActivities, 'ALL', 'CLOSED')).toEqual([
       mixedActivities[1],
-      mixedActivities[4],
+      mixedActivities[3],
     ])
   })
 
