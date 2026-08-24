@@ -20,11 +20,11 @@ O repositório foi criado a partir do template do desafio, já com:
 - Banco H2 em arquivo, com 12 atividades de demonstração pré-carregadas.
 - Um produto funcional, porém com regras de negócio incompletas, comportamentos incorretos e partes do fluxo ainda não implementadas — conforme descrito no `PROJECT.md` e no `CHALLENGE.md`.
 
-A partir daí, a equipe abriu 13 Issues (bugs e features) e 13 Pull Requests, todos já mesclados na `master`.
-
 ---
 
 ## 22/08/2026 — Primeira leva de correções e funcionalidades
+
+A partir daí, a equipe abriu 13 Issues (bugs e features) e 13 Pull Requests, todos já mesclados na `master`.
 
 ### Dashboard de indicadores (PR #10, feature)
 Criada a página `DashboardPage.tsx`, antes inexistente, apresentando KPIs e estatísticas das atividades: total de atividades, total de inscrições, vagas disponíveis, distribuição por status (abertas/lotadas/encerradas) e por categoria, com barras de progresso proporcionais.
