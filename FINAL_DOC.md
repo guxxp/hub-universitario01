@@ -20,11 +20,11 @@ O repositório foi criado a partir do template do desafio, já com:
 - Banco H2 em arquivo, com 12 atividades de demonstração pré-carregadas.
 - Um produto funcional, porém com regras de negócio incompletas, comportamentos incorretos e partes do fluxo ainda não implementadas — conforme descrito no `PROJECT.md` e no `CHALLENGE.md`.
 
-A partir daí, a equipe abriu 13 Issues (bugs e features) e 13 Pull Requests, todos já mesclados na `master`.
-
 ---
 
 ## 22/08/2026 — Primeira leva de correções e funcionalidades
+
+A partir daí, a equipe abriu 13 Issues (bugs e features) e 13 Pull Requests, todos já mesclados na `master`.
 
 ### Dashboard de indicadores (PR #10, feature)
 Criada a página `DashboardPage.tsx`, antes inexistente, apresentando KPIs e estatísticas das atividades: total de atividades, total de inscrições, vagas disponíveis, distribuição por status (abertas/lotadas/encerradas) e por categoria, com barras de progresso proporcionais.
@@ -76,13 +76,14 @@ Foi implementado:
 
 ## Panorama geral
 
-| Data | Itens entregues | Áreas |
-| 18/08/2026 | Estado inicial do desafio | Backend, Frontend, Banco de dados |
-| 22/08/2026 | 8 Pull Requests (dashboard, capacidade, filtro de categoria, 404, busca, documentação, e-mail, auto reload) | Backend e Frontend |
-| 23/08/2026 | 2 Pull Requests (filtro de disponibilidade, estabilização de testes) | Frontend |
-| 24/08/2026 | 1 Pull Request (cancelamento de inscrição) | Backend e Frontend |
+
+- **18/08/2026** — Estado inicial do desafio. Áreas: Backend, Frontend, Banco de dados.
+- **22/08/2026** — 8 Pull Requests (dashboard, capacidade, filtro de categoria, 404, busca, documentação, e-mail, auto reload). Áreas: Backend e Frontend.
+- **23/08/2026** — 2 Pull Requests (filtro de disponibilidade, estabilização de testes). Área: Frontend.
+- **24/08/2026** — 1 Pull Request (cancelamento de inscrição). Áreas: Backend e Frontend.
 
 Ao todo, 13 Issues foram abertas e fechadas, e 13 Pull Requests foram mesclados na `master`, cobrindo tanto correções de bugs (validação de capacidade, filtros, busca, tratamento de erro 404, validação de e-mail) quanto novas funcionalidades (dashboard de indicadores, atualização automática da interface, filtro por disponibilidade e cancelamento de inscrição).
+
 
 ## Estado atual do produto
 
