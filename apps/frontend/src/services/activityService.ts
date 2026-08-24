@@ -25,3 +25,10 @@ export async function createRegistration(
   const response = await api.post<Registration>(`/activities/${activityId}/registrations`, input)
   return response.data
 }
+
+export async function cancelRegistration(
+  activityId: number,
+  registrationId: number,
+): Promise<void> {
+  await api.delete(`/activities/${activityId}/registrations/${registrationId}`)
+}

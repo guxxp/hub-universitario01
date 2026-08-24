@@ -1,15 +1,16 @@
 package br.edu.hub.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.edu.hub.dto.RegistrationRequest;
 import br.edu.hub.dto.RegistrationResponse;
 import br.edu.hub.entity.Activity;
 import br.edu.hub.entity.Registration;
 import br.edu.hub.repository.ActivityRepository;
 import br.edu.hub.repository.RegistrationRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class RegistrationService {
@@ -38,11 +39,21 @@ public class RegistrationService {
     return RegistrationResponse.from(registration);
   }
 
-  @Transactional(readOnly = true)
+      @Transactional(readOnly = true)
   public List<RegistrationResponse> list(Long activityId) {
     activityService.requireActivity(activityId);
     return registrationRepository.findByActivityIdOrderByCreatedAtAsc(activityId).stream()
         .map(RegistrationResponse::from)
         .toList();
+  }
+
+  @Transactional
+  public void cancel(Long activityId, Long registrationId) {
+    Activity activity = activityService.requireActivity(activityId);
+    Registration registration = registrationRepository.findByIdAndActivityId(registrationId, activityId)
+        .orElseThrow(() -> new IllegalArgumentException("Registration not found"));
+    registrationRepository.delete(registration);
+    activity.decrementRegistrations();
+    activityRepository.save(activity);
   }
 }

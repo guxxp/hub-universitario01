@@ -1,5 +1,7 @@
 package br.edu.hub.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,8 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "activities")
@@ -104,10 +104,19 @@ public class Activity {
     public void setLocation(String location) { this.location = location; }
     public void setDate(LocalDateTime date) { this.date = date; }
 
-    public void incrementRegistrations() {
+        public void incrementRegistrations() {
         registeredCount++;
         if (registeredCount >= capacity) {
             status = ActivityStatus.FULL;
+        }
+    }
+
+    public void decrementRegistrations() {
+        if (registeredCount > 0) {
+            registeredCount--;
+        }
+        if (status == ActivityStatus.FULL && registeredCount < capacity) {
+            status = ActivityStatus.OPEN;
         }
     }
 

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+  cancelRegistration,
   createRegistration,
   getActivities,
   getActivity,
@@ -34,6 +35,19 @@ export function useCreateRegistration(activityId: number) {
 
   return useMutation({
     mutationFn: (input: RegistrationInput) => createRegistration(activityId, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activities'] })
+      queryClient.invalidateQueries({ queryKey: ['activities', activityId] })
+      queryClient.invalidateQueries({ queryKey: ['activities', activityId, 'registrations'] })
+    },
+  })
+}
+
+export function useCancelRegistration(activityId: number) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (registrationId: number) => cancelRegistration(activityId, registrationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['activities'] })
       queryClient.invalidateQueries({ queryKey: ['activities', activityId] })

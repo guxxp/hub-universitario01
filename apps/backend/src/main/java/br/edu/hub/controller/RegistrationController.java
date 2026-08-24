@@ -5,6 +5,7 @@ import br.edu.hub.dto.RegistrationResponse;
 import br.edu.hub.service.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +32,15 @@ public class RegistrationController {
         return registrationService.register(activityId, request);
     }
 
-    @GetMapping
+        @GetMapping
     public List<RegistrationResponse> list(@PathVariable Long activityId) {
         return registrationService.list(activityId);
     }
+
+    @DeleteMapping("/{registrationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancel(@PathVariable Long activityId, @PathVariable Long registrationId) {
+        registrationService.cancel(activityId, registrationId);
+    }
 }
+
