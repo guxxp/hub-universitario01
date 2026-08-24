@@ -355,3 +355,4 @@ nav a.active { color: #111; font-weight: 600; }
   .registration-panel { padding: 24px; }
   .registration-panel form { grid-template-columns: 1fr; }
 }
+.notice.already-registered { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }

@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import axios from 'axios'
-import { useCreateRegistration } from '../hooks/useActivities'
+import { useCancelRegistration, useCreateRegistration } from '../hooks/useActivities'
 import type { ApiError } from '../types/activity'
+import { addMyRegistration, getMyRegistrationIds, removeMyRegistration } from '../utils/myRegistrations'
 
 interface RegistrationFormProps {
   activityId: number
@@ -12,18 +13,28 @@ export function RegistrationForm({ activityId, disabled = false }: RegistrationF
   const [studentName, setStudentName] = useState('')
   const [studentEmail, setStudentEmail] = useState('')
   const registration = useCreateRegistration(activityId)
+  const cancelRegistration = useCancelRegistration(activityId)
+  const myRegistrationId = getMyRegistrationIds(activityId)[0]
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     registration.mutate(
       { studentName, studentEmail },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          addMyRegistration(activityId, data.id)
           setStudentName('')
           setStudentEmail('')
         },
       },
     )
+  }
+
+  function handleCancel() {
+    if (myRegistrationId === undefined) return
+    cancelRegistration.mutate(myRegistrationId, {
+      onSuccess: () => removeMyRegistration(activityId, myRegistrationId),
+    })
   }
 
   const apiError = axios.isAxiosError<ApiError>(registration.error)
@@ -36,7 +47,19 @@ export function RegistrationForm({ activityId, disabled = false }: RegistrationF
         <p className="eyebrow">Participe</p>
         <h2 id="registration-title">Inscreva-se nesta atividade</h2>
       </div>
-      {disabled ? (
+            {myRegistrationId !== undefined ? (
+        <p className="notice success already-registered">
+          <span>Você já está inscrito nesta atividade.</span>
+          <button
+            className="primary-button"
+            type="button"
+            onClick={handleCancel}
+            disabled={cancelRegistration.isPending}
+          >
+            {cancelRegistration.isPending ? 'Cancelando...' : 'Cancelar inscrição'}
+          </button>
+        </p>
+      ) : disabled ? (
         <p className="notice warning">As inscrições para esta atividade não estão disponíveis.</p>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -69,11 +92,11 @@ export function RegistrationForm({ activityId, disabled = false }: RegistrationF
           </button>
         </form>
       )}
-      {registration.isSuccess && (
-        <p className="notice success" role="status">Inscrição realizada com sucesso!</p>
-      )}
       {registration.isError && (
         <p className="notice error" role="alert">{apiError ?? 'Não foi possível realizar a inscrição.'}</p>
+      )}
+      {cancelRegistration.isError && (
+        <p className="notice error" role="alert">Não foi possível cancelar a inscrição.</p>
       )}
     </section>
   )
